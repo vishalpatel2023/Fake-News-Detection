@@ -23,3 +23,7 @@ Thumbs.db
 
 # Ignore VS Code settings (if using VS Code)
 .vscode/
+
+#ignore data files (except processed one)
+data/raw/
+data/processed/
