@@ -27,3 +27,4 @@ Thumbs.db
 #ignore data files (except processed one)
 data/raw/
 
+archive.zip
