@@ -11,7 +11,7 @@ This project detects fake news using machine learning.
 ## Installation
 1. Clone this repository:
    ```sh
-   git clone https://github.com/yourusername/Fake-News-Detection.git
+   git clone https://github.com/vishalpatel2023/Fake-News-Detection.git
 
 2. Navigate to the project directory:
     cd Fake-News-Detection
