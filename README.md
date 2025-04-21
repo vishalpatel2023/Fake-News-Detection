@@ -1,34 +1,103 @@
 # Fake News Detection
 
-This project detects fake news using machine learning.
+A Jupyter‑notebook–driven pipeline to detect fake
+news articles using classic ML models—and a simple
+Flask API for inference.
+
+
+## Project Overview
+
+Fake-News-Detection is a lightweight ML pipeline built in Jupyter notebooks that:
+
+- Preprocesses and cleans a merged dataset of fake & real news.
+- Extracts TF‑IDF features (unigrams & bigrams).
+- Trains and compares Logistic Regression, Naïve Bayes, SVM & Random Forest.
+- Exposes a simple Flask endpoint for real‑time predictions.
+
+
 
 ## Features
-- Uses `scikit-learn` for text classification
-- `Flask` web API for prediction
-- NLP preprocessing with `nltk`
-- Data visualization with `matplotlib` and `seaborn`
+
+- **Notebook‑driven**: EDA, preprocessing, modeling & evaluation in 2 notebooks.  
+- **Modular ML**: TF‑IDF vectorizer + common classifiers.  
+- **Visualization**: Word clouds, bar charts of top TF‑IDF terms, model comparison.  
+- **API**: Single‑endpoint Flask service for “real” vs. “fake” inference.
+
 
 ## Installation
-1. Clone this repository:
-   ```sh
-   git clone https://github.com/vishalpatel2023/Fake-News-Detection.git
 
-2. Navigate to the project directory:
-    cd Fake-News-Detection
+```bash
+# 1. Clone repo
+git clone https://github.com/vishalpatel2023/Fake-News-Detection.git
 
-3. Create and activate a virtual environment:
-    python -m venv venv
-    source venv/bin/activate  # Mac/Linux
-    venv\Scripts\activate  # Windows
+cd Fake-News-Detection
 
-4. Install dependencies:
-    pip install -r requirements.txt
+# 2. Create & activate venv
+python -m venv venv
+source venv/bin/activate      # Mac/Linux
+venv\Scripts\activate.bat     # Windows
+
+# 3. Install dependencies
+pip install -r requirements.txt
 
 Usage
-To run the app:
-    python app.py
+Data Preparation
+Place raw files in data/raw/ as fake.csv & true.csv.
 
+Run 02_Preprocess.ipynb to generate data/processed/preprocessed_news.csv.
+
+Running Notebooks
+Open Jupyter:
+```bash
+jupyter notebook
+
+Execute 02_Preprocess.ipynb ➔ 03_Modeling.ipynb.
+
+```bash
+cd backend
+export FLASK_APP=app.py    # or set in .env
+flask run
 
 ## Folder Structure:
 
-Fake-News-Detection/ │── data/ # 📂 Store raw & processed datasets │ ├── raw/ # Original datasets (CSV, JSON, etc.) │ ├── processed/ # Preprocessed datasets (cleaned data) │ ├── train.csv # Training data (if applicable) │ ├── test.csv # Test data (if applicable) │ │── notebooks/ # 📂 Jupyter Notebooks │ ├── 01_EDA.ipynb # Exploratory Data Analysis (EDA) │ ├── 02_Preprocessing.ipynb # Data Cleaning & Processing │ ├── 03_Modeling.ipynb # Model Training & Evaluation │ ├── 04_Deployment.ipynb # Deployment Code │ │── src/ # 📂 Source Code (Python scripts) │ ├── preprocess.py # Text cleaning & preprocessing │ ├── train_model.py # ML model training script │ ├── predict.py # Model inference script │ ├── config.py # Configuration settings (e.g., paths, parameters) │ │── models/ # 📂 Saved models & checkpoints │ ├── model.pkl # Trained ML model │ ├── vectorizer.pkl # Saved TF-IDF/Word2Vec model │ │── reports/ # 📂 Reports & results │ ├── accuracy_report.txt # Model performance report │ ├── visualizations/ # Plots, graphs, confusion matrix │ │── logs/ # 📂 Logs for debugging │ ├── training.log # Logs for training process │ │── app/ # 📂 Web App for deployment (Optional) │ ├── static/ # CSS, JS files (for frontend) │ ├── templates/ # HTML files │ ├── app.py # Flask/Streamlit backend script │ │── requirements.txt # Dependencies for the project │── README.md # Project Documentation │── .gitignore # Ignore unnecessary files in Git
+Fake-News-Detection/
+│
+├── data/                # processed datasets
+│
+├── frontend/            # Web frontend
+│   ├── static/
+│   │   ├── script.js
+│   │   └── style.css
+│   └── templates/
+│       └── index.html
+│
+├── backend/             # Backend code (Flask APIs)
+│
+├── models/              # Trained model files like model.pkl, vectorizer.pkl
+│
+├── notebooks/           # Main development work
+│   ├── 02_Preprocess.ipynb
+│   └── 03_Modeling.ipynb
+│
+├── reports/             # Any visualizations, evaluation metrics
+│
+├── requirements.txt     # List of Python dependencies
+├── README.md            # Project summary and instructions
+└── .gitignore           # Git housekeeping
+
+
+
+👥 Contributors
+This project was developed collaboratively by the following team members:
+
+Vishal Patel (Reg. No. 20233314) – Team Leader
+
+Virajsingh Mohansingh Rajput (Reg. No. 20233360)
+
+Vilhekar Sojwal Awdhut (Reg. No. 20233359)
+
+Shib Chandan Mistry (Reg. No. 20233263)
+
+Varun Kumar (Reg. No. 20233581)
+
+(Special thanks to each team member for their valuable contribution in successfully completing this project.)
