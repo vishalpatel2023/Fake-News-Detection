@@ -90,8 +90,6 @@ def predict():
     # num = random.random()
     # num = num*10+80+(num%4)
     #label = "Fake News\n " if prediction == 1 else "Real News\n  Sureness(%): ${num}"
-    # num = random.random()
-    # num = num * 10 + 80 + (num % 4)  # Random confidence between ~80-90%
     num = random.uniform(78, 98)  # Random float between 70 and 98
     #this will be fixed later 
     label = f"Fake News\n  Sureness (%): {num:.2f}" if prediction == 1 else f"Real News\n  Sureness (%): {num:.2f}"
