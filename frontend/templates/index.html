@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -37,12 +37,474 @@
 </body>
 </html>
 
+ -->
 
 
 
 
 
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fake News Detector</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>Fake News Detector</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <section class="intro">
+      <h2>Detect Fake News with Ease</h2>
+      <p>Enter news text to check if it's real or fake, based on advanced machine learning models.</p>
+    </section>
+
+    <section class="news-check">
+      <div class="flip-card">
+        <div class="flip-card-inner" id="card">
+          <div class="flip-card-front">
+            <textarea id="newsInput" placeholder="Enter news..." rows="6"></textarea>
+            <button onclick="getPrediction()">Check News</button>
+          </div>
+          <div class="flip-card-back">
+            <h2 id="result">Prediction</h2>
+            <p id="prediction-probabilities">Probabilities will appear here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>Made with ❤️ by the Fake News Detection Team</p>
+      <div class="contributors">
+        <h3>Contributors:</h3>
+        <ul>
+          <li>Sojwal Vilhekar</li>
+          <li>Vishal Patel</li>
+          <li>Virajsingh Rajput</li>
+          <li>Varun Kumar</li>
+          <li>Shibchandan Mishtry</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
+  <script>
+    const card = document.querySelector('.flip-card');
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+    });
+  </script>
+  <script>
+    async function getPrediction() {
+      const newsText = document.getElementById('newsInput').value;
+      const resultText = document.getElementById('result');
+      const probText = document.getElementById('prediction-probabilities');
+      const card = document.querySelector('.flip-card');
+  
+      resultText.textContent = "Loading...";
+      probText.textContent = "Please wait...";
+  
+      try {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ news: newsText }),
+        });
+  
+        const data = await response.json();
+  
+        // Assuming backend returns: { label: "Fake", probability: 0.87 }
+        resultText.textContent = `Prediction: ${data.label}`;
+        probText.textContent = `Confidence: ${(data.probability * 100).toFixed(2)}%`;
+  
+        card.classList.add("flipped");
+      } catch (error) {
+        resultText.textContent = "Error";
+        probText.textContent = "Something went wrong.";
+        console.error("Prediction error:", error);
+      }
+    }
+  </script>
+  
+</body>
+</html> -->
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake News Detector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at center, #001f2d, #001421);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #011627;
+      text-align: center;
+      padding: 1rem 0;
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #00fff7;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+
+    nav ul li {
+      margin: 0 20px;
+    }
+
+    nav ul li a {
+      color: #00ffc8;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ff6bcb;
+    }
+
+    .content {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .flip-card {
+      background-color: transparent;
+      width: 350px;
+      height: 300px;
+      perspective: 1000px;
+      margin: auto;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #0ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #00ffc8;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1rem;
+      resize: none;
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(to right, #00fff7, #00ffc8);
+      color: #001421;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #00ffc8;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #ff6bcb, #ffb6f9);
+      box-shadow: 0 0 15px #ff6bcb;
+    }
+
+    footer {
+      background-color: #011627;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      color: #00fff7;
+    }
+
+    footer h3 {
+      margin-bottom: 10px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin: 5px 0;
+    }
+
+    footer ul li:hover {
+      color: #ff6bcb;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Fake News Detector</h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <section class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <textarea id="newsInput" placeholder="Enter news..."></textarea>
+          <button onclick="getPrediction(event)">Check News</button>
+        </div>
+        <div class="flip-card-back">
+          <h2 id="result">Prediction</h2>
+          <p id="prediction-probabilities">Probabilities will appear here.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <h3>Contributors:</h3>
+    <ul>
+      <li>Sojwal Vilhekar</li>
+      <li>Vishal Patel</li>
+      <li>Virajsingh Rajput</li>
+      <li>Varun Kumar</li>
+      <li>Shibchandan Mishtry</li>
+    </ul>
+  </footer>
+
+  <script>
+    async function getPrediction(event) {
+      event.stopPropagation();
+      const card = document.querySelector('.flip-card');
+      const text = document.getElementById('newsInput').value;
+      const result = document.getElementById('result');
+      const prob = document.getElementById('prediction-probabilities');
+
+      result.textContent = "Loading...";
+      prob.textContent = "Please wait...";
+
+      try {
+        const res = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+
+        const data = await res.json();
+        result.textContent = `Prediction: ${data.label}`;
+        prob.textContent = `Confidence: ${(data.probability * 100).toFixed(2)}%`;
+        card.classList.add("flipped");
+      } catch (err) {
+        result.textContent = "Error";
+        prob.textContent = "Could not fetch result.";
+      }
+    }
+  </script>
+</body>
+</html> -->
 
 
 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fake News Detector</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    .marquee {
+        background: #586a70;
+        background: linear-gradient(90deg, rgba(88, 106, 112, 1) 0%, rgba(175, 87, 199, 1) 51%, rgba(237, 221, 83, 1) 100%);
+        color: #000000;
+        font-weight: bold;
+        padding: 12px 0;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    .marquee-text {
+        display: inline-block;
+        white-space: nowrap;
+        animation: marquee 12s linear infinite;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(100%);
+        }
+        50% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    h1 {
+        animation: blink 0.5s steps(1, start) infinite;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0.7;
+            /* color: red; */
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="logo">
+      <h1>Fake News Detector</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Running Text Marquee -->
+  <div class="marquee">
+    <div class="marquee-text">Stay alert! Detect fake news with our intelligent system.    Enter any news article to find out if it's real or fake!</div>
+  </div>
+
+  <!-- Main Body Section -->
+  <main class="content">
+    <section class="intro">
+      <h2>Detect Fake News with Ease</h2>
+      <p>Enter news text to check if it's real or fake, based on advanced machine learning models.</p>
+    </section>
+
+    <section class="news-check">
+      <div class="flip-card">
+        <div class="flip-card-inner" id="card">
+          <div class="flip-card-front">
+            <textarea id="newsInput" placeholder="Enter news article..." rows="6"></textarea>
+            <button onclick="getPrediction()">Check News</button>
+          </div>
+          <div class="flip-card-back">
+            <h2 id="result">Prediction</h2>
+            <!-- <p id="prediction-probabilities">Probabilities will appear here.</p> -->
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    <section class="instructions" style="max-width: 800px; margin: 30px auto; text-align: left; background: #0a022aa1; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+      <h3 style="color: #00e1ff;">Instructions:</h3>
+      <ol style="color: #ebf0f4; font-size: 1rem; line-height: 1.7;">
+        <li>Please enter a news article containing at least <strong>10 lines(Min 100 words)</strong>. The more detailed the content, the more reliable the prediction.</li>
+        <li>This tool is designed for <strong>verification purposes only</strong>. Use it to support analysis, not as legal proof.</li>
+        <li>The model has been trained on a <strong>fixed dataset</strong>. If your news follows similar patterns, the results will be more accurate.</li>
+        <li>Avoid using incomplete or highly ambiguous text, as it may impact the reliability of the output.</li>
+        <li>This tool does not cover all possible sources or types of misinformation—use critical thinking and additional resources when needed.</li>
+      </ol>
+    </section>
+    
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-content">
+      <p>Made with ❤️ by the Fake News Detection Team</p>
+      <div class="contributors">
+        <h3>Contributors:</h3>
+        <ul>
+          <li>Vishal Patel </li>
+          <li>Sojwal Vilhekar</li>
+          <li>Virajsingh Rajput</li>
+          <li>Varun Kumar</li>
+          <li>Shibchandan Mishtry</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
 
