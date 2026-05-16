@@ -1,38 +1,60 @@
-# Fake News Detection
+# 🛡️ AI News Authenticator (Fake News Detection)
 
-A Jupyter‑notebook–driven pipeline to detect fake news articles using classic ML models — and a simple Flask API for inference.
+A full-stack machine learning project that detects fake news articles. It features a Jupyter notebook–driven training pipeline, a Flask API for real-time inference, and an interactive web frontend.
 
 ## Project Overview
 
-Fake-News-Detection is a lightweight ML pipeline built in Jupyter notebooks that:
+This project provides a lightweight, modular ML pipeline that:
 
-- Preprocesses and cleans a merged dataset of fake & real news.
-- Extracts TF‑IDF features (unigrams & bigrams).
-- Trains and compares Logistic Regression, Naïve Bayes, SVM & Random Forest.
-- Exposes a simple Flask endpoint for real‑time predictions.
+- Preprocesses and cleans a merged dataset of fake and real news
+- Extracts TF-IDF features using unigrams and bigrams
+- Trains and compares Logistic Regression, Naïve Bayes, SVM, and Random Forest models
+- Exposes a Flask backend endpoint to serve the best-performing model
+- Provides a clean, responsive HTML/CSS/JavaScript frontend for instant predictions
 
-## Features
+## ✨ Features
 
-- **Notebook‑driven**: EDA, preprocessing, modeling & evaluation in 2 notebooks.  
-- **Modular ML**: TF‑IDF vectorizer + common classifiers.  
-- **Visualization**: Word clouds, bar charts of top TF‑IDF terms, model comparison.  
-- **API**: Single‑endpoint Flask service for “real” vs. “fake” inference.
+- **Notebook-driven ML**: EDA, text preprocessing, modeling, and evaluation in organized Jupyter notebooks
+- **NLP Techniques**: Custom text cleaning, stopword removal, lemmatization, and TF-IDF vectorization
+- **API Backend**: Single-endpoint Flask service (`/api/predict`) handling POST requests for real vs. fake inference
+- **Interactive UI**: A modern glassmorphism web interface with animated confidence bars
 
-## Installation
+## 📊 Datasets
 
-### 1. Clone the repo
+This project uses the **Fake and Real News Dataset** from Kaggle.
+
+You will need to download the raw CSV files to run the training notebooks from scratch:
+
+- [Download Fake.csv](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv)
+- [Download True.csv](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset?select=True.csv)
+
+---
+
+## 🚀 Installation & Setup
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/vishalpatel2023/Fake-News-Detection.git
 cd Fake-News-Detection
 ```
 
-### 2. Create & activate virtual environment
+### 2. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate      # Mac/Linux
-venv\Scripts\activate.bat     # Windows
+```
+
+**Mac/Linux**
+
+```bash
+source venv/bin/activate
+```
+
+**Windows**
+
+```bash
+venv\Scripts\activate
 ```
 
 ### 3. Install dependencies
@@ -41,65 +63,77 @@ venv\Scripts\activate.bat     # Windows
 pip install -r requirements.txt
 ```
 
-## Usage
+## 💻 How to Use
 
-### Data Preparation
+### Phase 1: Data Preparation & Model Training (Optional)
 
-Place raw files in `data/raw/` as `fake.csv` & `true.csv`.
+If you only want to run the app, you can skip this step as long as the `.pkl` files are already present in the `models/` folder.
 
-Run `01_Preprocess.ipynb` to generate `data/processed/preprocessed_news.csv`.
+1. Download the datasets from the Kaggle links above.
+2. Place the raw files in `data/raw/` as `Fake.csv` and `True.csv`.
+3. Open Jupyter Notebook and run `01_Preprocessing.ipynb` to clean the text and generate processed datasets.
+4. Run `02_Modeling.ipynb` to train the models and export `best_model.pkl` and `tfidf_vectorizer.pkl` to the `models/` folder.
 
-### Running Notebooks
+### Phase 2: Running the Application
 
-Open Jupyter:
+To use the interactive web app, start the backend server and open the frontend.
 
-```bash
-jupyter notebook
-```
-
-Then execute:
-- `01_Preprocess.ipynb`
-- `02_Modeling.ipynb`
-
-### Running the Flask API
+#### 1. Start the Flask Backend
 
 ```bash
 cd backend
-export FLASK_APP=app.py    # or set in .env
-flask run
+python app.py
 ```
 
-## Folder Structure
+The server will start at `http://127.0.0.1:5000`.
 
-```
+#### 2. Open the Frontend UI
+
+Keep the terminal running, then open the `frontend/` folder and launch `index.html` in your browser, or use a Live Server extension.
+
+Paste an article, click **Analyze**, and view the prediction result.
+
+## 📁 Folder Structure
+
+```text
 Fake-News-Detection/
 │
-├── data/                # Processed datasets
-├── frontend/            # Web frontend
-│   ├── static/
-│   │   ├── script.js
-│   │   └── style.css
-│   └── templates/
-│       └── index.html
-├── backend/             # Backend code (Flask APIs)
-├── models/              # Trained model files like model.pkl, vectorizer.pkl
-├── notebooks/           # Main development work
-│   ├── 02_Preprocess.ipynb
-│   └── 03_Modeling.ipynb
-├── reports/             # Any visualizations, evaluation metrics
-├── requirements.txt     # List of Python dependencies
-├── README.md            # Project summary and instructions
-└── .gitignore           # Git housekeeping
+├── backend/                 # Backend Flask API
+│   └── app.py               # Main API application
+│
+├── data/                    # Data storage
+│   ├── processed/           # Cleaned CSVs, TF-IDF features, and labels
+│   └── raw/                 # Raw Kaggle datasets (Fake.csv, True.csv)
+│
+├── frontend/                # Web user interface
+│   ├── index.html           # Main application page
+│   ├── script.js            # API connection and UI logic
+│   └── style.css            # Styling and animations
+│
+├── models/                  # Saved machine learning components
+│   ├── best_model.pkl       # Trained classifier
+│   └── tfidf_vectorizer.pkl # Fitted vectorizer
+│
+├── notebooks/               # Development and research notebooks
+│   ├── 01_Preprocessing.ipynb
+│   └── 02_Modeling.ipynb
+│
+├── reports/                 # Evaluation metrics and text outputs
+│   └── accuracy_report.txt
+│
+├── .gitignore               # Git housekeeping
+├── README.md                # Project documentation
+└── requirements.txt         # Python dependencies
 ```
 
 ## 👥 Contributors
 
 This project was developed collaboratively by the following team members:
 
-- **Vishal Patel** (Reg. No. 20233314) – *Team Leader*  
-- **Virajsingh Mohansingh Rajput** (Reg. No. 20233360)  
-- **Vilhekar Sojwal Awdhut** (Reg. No. 20233359)  
-- **Shib Chandan Mistry** (Reg. No. 20233263)  
-- **Varun Kumar** (Reg. No. 20233581)  
+- **Vishal Patel** (Reg. No. 20233314) — Team Leader
+- **Virajsingh Mohansingh Rajput** (Reg. No. 20233360)
+- **Vilhekar Sojwal Awdhut** (Reg. No. 20233359)
+- **Shib Chandan Mistry** (Reg. No. 20233263)
+- **Varun Kumar** (Reg. No. 20233581)
 
-**🙏 Special thanks to each team member for their valuable contribution in successfully completing this project.**
+🙏 Special thanks to each team member for their valuable contribution in successfully completing this project.
