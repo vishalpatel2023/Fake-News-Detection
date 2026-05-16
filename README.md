@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 Place raw files in `data/raw/` as `fake.csv` & `true.csv`.
 
-Run `02_Preprocess.ipynb` to generate `data/processed/preprocessed_news.csv`.
+Run `01_Preprocess.ipynb` to generate `data/processed/preprocessed_news.csv`.
 
 ### Running Notebooks
 
@@ -58,8 +58,8 @@ jupyter notebook
 ```
 
 Then execute:
-- `02_Preprocess.ipynb`
-- `03_Modeling.ipynb`
+- `01_Preprocess.ipynb`
+- `02_Modeling.ipynb`
 
 ### Running the Flask API
 

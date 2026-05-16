@@ -1,58 +1,49 @@
-
-# updated code**********************
-
-
-# request : used to get the user request (eq. user input)
-# jsonify : get result in json format , and then process the text in json format
-# render_template : To load an HTML file (for the web interface)
-# CORS : Allows requests from different origins (like your frontend)
-# pickle : Used to load saved models and vectorizers
-# re : Regular expressions for cleaning text
-# nltk : Natural Language Toolkit for text processing.
-
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pickle
 import re
-import random
 import nltk
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+import joblib 
+import os
 
+# Initializing Flask app
+app = Flask(__name__)
+CORS(app)
 
-# setting up the flask app
-# app access the frontend files
-app = Flask(__name__, static_folder="../frontend/static", template_folder="../frontend/templates")
+# Download necessary NLTK resources quietly
+nltk.download("wordnet", quiet=True)
 
-# 'cross origin resource sharing' , since the backend is on diff port and frontend is on different port 
-# so the cors allows the frontend part to access the backend part and 
+# 1. LOADing oUR MODEL & VECTORIZER
 
-CORS(app) # allows frontend to connect with backend
+# Dynamically find the models folder based on your directory structure
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # This is the /backend folder
+MODELS_DIR = os.path.join(BASE_DIR, '..', 'models')   # This goes up one level to /models
 
+# NOTE: Check your actual filenames in the models folder. 
+# Based on your image, I am assuming they are named exactly this:
+MODEL_PATH = os.path.join(MODELS_DIR, 'best_model.pkl')
+VECTORIZER_PATH = os.path.join(MODELS_DIR, 'tfidf_vectorizer.pkl')
 
-# Ensure necessary NLTK resources are available
-nltk.download("stopwords")
-nltk.download("wordnet")
+try:
+    best_model = joblib.load(MODEL_PATH)
+    tfidf_vectorizer = joblib.load(VECTORIZER_PATH)
+    print("✅ Model and Vectorizer loaded successfully from the 'models' folder!")
+except Exception as e:
+    print(f"❌ Warning: Could not load model/vectorizer. Error: {e}")
 
-# Load your TF-IDF vectorizer and the best model (make sure these files are correctly saved)
-with open("../models/tfidf_vectorizer.pkl", "rb") as f:
-    tfidf_vectorizer = pickle.load(f)
+# 2. NLP PREPROCESSING SETUP
 
-with open("../models/best_model.pkl", "rb") as f:
-    best_model = pickle.load(f)
+stop_words = ['a', 'about', 'above', 'after', 'again', 'against', 'ain', 'all', 'am', 'an', 'and', 'any', 'are', 'aren', "aren't", 'as', 'at', 'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', 'couldn', "couldn't", 'd', 'did', 'didn', "didn't", 'do', 'does', 'doesn', "doesn't", 'doing', 'don', "don't", 'down', 'during', 'each', 'few', 'for', 'from', 'further', 'had', 'hadn', "hadn't", 'has', 'hasn', "hasn't", 'have', 'haven', "haven't", 'having', 'he', "he'd", "he'll", 'her', 'here', 'hers', 'herself', "he's", 'him', 'himself', 'his', 'how', 'i', "i'd", 'if', "i'll", "i'm", 'in', 'into', 'is', 'isn', "isn't", 'it', "it'd", "it'll", "it's", 'its', 'itself', "i've", 'just', 'll', 'm', 'ma', 'me', 'mightn', "mightn't", 'more', 'most', 'mustn', "mustn't", 'my', 'myself', 'needn', "needn't", 'nor', 'now', 'o', 'of', 'off', 'on', 'once', 'only', 'or', 'other', 'our', 'ours', 'ourselves', 'out', 'over', 'own', 're', 's', 'same', 'shan', "shan't", 'she', "she'd", "she'll", "she's", 'should', 'shouldn', "shouldn't", "should've", 'so', 'some', 'such', 't', 'than', 'that', "that'll", 'the', 'their', 'theirs', 'them', 'themselves', 'then', 'there', 'these', 'they', "they'd", "they'll", "they're", "they've", 'this', 'those', 'through', 'to', 'too', 'under', 'until', 'up', 've', 'very', 'was', 'wasn', "wasn't", 'we', "we'd", "we'll", "we're", 'were', 'weren', "weren't", "we've", 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why', 'will', 'with', 'won', "won't", 'wouldn', "wouldn't", 'y', 'you', "you'd", "you'll", 'your', "you're", 'yours', 'yourself', 'yourselves', "you've"]
 
-# Define your stopwords and lemmatizer exactly as used during training
-stop_words = set(stopwords.words("english")) - {"not", "no"}
 lemmatizer = WordNetLemmatizer()
 
-# Pre-processing functions
 def clean_text(text):
-    text = re.sub(r'\d+', '', text)            # Remove numbers
-    text = re.sub(r'[^\w\s]', '', text)          # Remove punctuation
-    text = re.sub(r'\s+', ' ', text)             # Remove extra spaces
-    text = re.sub(r"\S+@\S+", "", text)           # Remove emails
-    text = re.sub(r"http\S+|www\S+", "", text)    # Remove URLs
+    text = re.sub(r'\d+', '', text)
+    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"\S+@\S+", "", text)
+    text = re.sub(r"http\S+|www\S+", "", text)
     return text.strip()
 
 def remove_stopwords(text):
@@ -67,42 +58,44 @@ def preprocess_input(text):
     text = lemmatize_text(text)
     return text
 
-@app.route('/')
-def index():
-    return render_template("index.html")
 
-@app.route('/predict', methods=["POST"])
-def predict():
+# 3. API ENDPOINTS
+
+@app.route('/api/predict', methods=['POST'])
+def predict_news():
     data = request.get_json()
-    text = data.get("text")
     
-    if not text:
-        return jsonify({"error": "No text provided"}), 400
-
-    # First, pre-process the text like you did during training
-    preprocessed_text = preprocess_input(text)
+    if not data or 'text' not in data:
+        return jsonify({'error': 'No text provided. Please send JSON with a "text" key.'}), 400
+        
+    raw_text = data['text']
     
-    # Then, vectorize the preprocessed text
-    vectorized = tfidf_vectorizer.transform([preprocessed_text])
-    
-    # Get the prediction from the model
-    prediction = best_model.predict(vectorized)[0]
-    # num = random.random()
-    # num = num*10+80+(num%4)
-    #label = "Fake News\n " if prediction == 1 else "Real News\n  Sureness(%): ${num}"
-    num = random.uniform(78, 98)  # Random float between 70 and 98
-    #this will be fixed later 
-    label = f"Fake News\n  Sureness (%): {num:.2f}" if prediction == 1 else f"Real News\n  Sureness (%): {num:.2f}"
+    try:
+        processed_text = preprocess_input(raw_text)
+        
+        input_tfidf = tfidf_vectorizer.transform([processed_text])
+        predicted_prob = best_model.predict_proba(input_tfidf)
+        
+        fake_probability = float(predicted_prob[0][1])
+        real_probability = float(predicted_prob[0][0])
+        prediction_label = "FAKE" if fake_probability > 0.5 else "REAL"
+        
+        return jsonify({
+            'status': 'success',
+            'prediction': prediction_label,
+            'confidence': {
+                'real_probability': real_probability,
+                'fake_probability': fake_probability
+            },
+            'processed_text': processed_text
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "Fake News Detection API is running!"})
 
-    return jsonify({"prediction": label})
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)

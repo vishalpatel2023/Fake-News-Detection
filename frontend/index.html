@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Authenticator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <header class="app-header">
+            <h1>🛡️ AI News Authenticator</h1>
+            <p>Powered by Machine Learning & Natural Language Processing</p>
+        </header>
+
+        <div class="content-grid">
+            <aside class="info-panel">
+                <div class="info-card">
+                    <h3>📝 How to Use</h3>
+                    <ul>
+                        <li>Find a news article you want to verify.</li>
+                        <li>Copy the <strong>main body text</strong> of the article (skip the ads, image captions, and author bios).</li>
+                        <li>Paste the text into the analyzer and click "Analyze Article".</li>
+                    </ul>
+                </div>
+
+                <div class="info-card warning-card">
+                    <h3>⚠️ Guidelines & Limitations</h3>
+                    <ul>
+                        <li><strong>Minimum Length:</strong> The AI needs context. Please paste at least 3-4 sentences (50+ words) for an accurate reading.</li>
+                        <li><strong>Article Types:</strong> This model was trained primarily on World News, Politics, and Global Events. It may not work well on personal blogs, opinion pieces, or heavy satire.</li>
+                        <li><strong>Not a Source of Truth:</strong> This is a Machine Learning model based on historical patterns, not a live fact-checker. Always do your own research!</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main class="analyzer-panel">
+                <div class="input-section">
+                    <label for="news-input">Paste Article Text:</label>
+                    <textarea id="news-input" placeholder="e.g., Reports emerged today stating that..."></textarea>
+                    
+                    <button id="analyze-btn" onclick="analyzeText()">
+                        <span id="btn-text">Analyze Article</span>
+                        <div id="loader" class="spinner"></div>
+                    </button>
+                    <p id="error-message" class="error-message"></p>
+                </div>
+
+                <div id="result-section" class="result-section hidden">
+                    <div id="prediction-badge" class="prediction-badge">Loading...</div>
+
+                    <div class="confidence-bars">
+                        <div class="bar-container">
+                            <div class="bar-label">
+                                <span>Real News Pattern</span>
+                                <span id="real-percent" class="percent-text">0%</span>
+                            </div>
+                            <div class="bar-bg">
+                                <div id="real-bar" class="bar-fill real-fill"></div>
+                            </div>
+                        </div>
+
+                        <div class="bar-container">
+                            <div class="bar-label">
+                                <span>Fake News Pattern</span>
+                                <span id="fake-percent" class="percent-text">0%</span>
+                            </div>
+                            <div class="bar-bg">
+                                <div id="fake-bar" class="bar-fill fake-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
