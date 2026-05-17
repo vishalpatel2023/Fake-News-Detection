@@ -2,6 +2,8 @@
 
 A full-stack machine learning project that detects fake news articles. It features a Jupyter notebook–driven training pipeline, a Flask API for real-time inference, and an interactive web frontend.
 
+![AI News Authenticator App](assets/app-screenshot.png)
+
 ## Project Overview
 
 This project provides a lightweight, modular ML pipeline that:
